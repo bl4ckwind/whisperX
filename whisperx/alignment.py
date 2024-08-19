@@ -27,8 +27,6 @@ PUNKT_ABBREVIATIONS = ["dr", "vs", "mr", "mrs", "prof"]
 
 LANGUAGES_WITHOUT_SPACES = ["ja", "zh"]
 
-NEW_MODLES = {"de": "jonatasgrosman/wav2vec2-xls-r-1b-german"}
-
 DEFAULT_ALIGN_MODELS_TORCH = {
     "en": "WAV2VEC2_ASR_BASE_960H",
     "fr": "VOXPOPULI_ASR_BASE_10K_FR",
@@ -69,9 +67,7 @@ DEFAULT_ALIGN_MODELS_HF = {
 def load_align_model(language_code, device, model_name=None, model_dir=None):
     if model_name is None:
         # use default model
-        if language_code in NEW_MODLES:
-            model_name = NEW_MODLES[language_code]
-        elif language_code in DEFAULT_ALIGN_MODELS_TORCH:
+        if language_code in DEFAULT_ALIGN_MODELS_TORCH:
             model_name = DEFAULT_ALIGN_MODELS_TORCH[language_code]
         elif language_code in DEFAULT_ALIGN_MODELS_HF:
             model_name = DEFAULT_ALIGN_MODELS_HF[language_code]
