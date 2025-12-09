@@ -11,7 +11,7 @@ license = { text = "BSD-2-Clause" }
 dependencies = [
     "ctranslate2~=4.6.2",
     "faster-whisper~=1.2.1",
-    "nltk~=3.9.3",
+    "nltk~=3.9.2",
     "omegaconf~=2.3.0",
     "onnxruntime~=1.23.2",
     "pandas~=2.3.3",
