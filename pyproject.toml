@@ -15,12 +15,12 @@ dependencies = [
     "omegaconf~=2.3.0",
     "onnxruntime~=1.23.2",
     "pandas~=2.3.3",
-    "av~=15.1.0",
+    "av~=16.1.0",
     "propcache~=0.4.1",
     "numpy>=2.3.4,<2.4.0; python_version >='3.13'",
     "pyannote-audio>=4.0.1,<4.1.0; python_version >='3.10'",
-    "torch~=2.8.0",
-    "torchaudio~=2.8.0",
+    "torch~=2.9.0",
+    "torchaudio~=2.9.0",
     "transformers~=4.56.0",
     "triton>=3.3.0; sys_platform == 'linux' and platform_machine == 'x86_64'" # only install triton on x86_64 Linux
 ]
@@ -39,11 +39,8 @@ include-package-data = true
 where = ["."]
 include = ["whisperx*"]
 
-# torchcodec (transitive dep of pyannote-audio >=4) has no wheels for Linux aarch64
 [tool.uv]
-override-dependencies = [
-    "torchcodec>=0.6.0; (sys_platform == 'linux' and platform_machine == 'x86_64') or sys_platform == 'darwin' or sys_platform == 'win32'",
-]
+override-dependencies = ["torchcodec ; sys_platform == 'never'"]
 
 [tool.uv.sources]
 torch = [
