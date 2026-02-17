@@ -58,11 +58,7 @@ class WhisperModel(faster_whisper.WhisperModel):
         )
 
         encoder_output = self.encode(features)
-
-        max_initial_timestamp_index = int(
-            round(options.max_initial_timestamp / self.time_precision)
-        )
-
+        
         result = self.model.generate(
                 encoder_output,
                 [prompt] * batch_size,
@@ -72,11 +68,13 @@ class WhisperModel(faster_whisper.WhisperModel):
                 max_length=self.max_length,
                 suppress_blank=options.suppress_blank,
                 suppress_tokens=options.suppress_tokens,
+                no_repeat_ngram_size=options.no_repeat_ngram_size,
+                repetition_penalty=options.repetition_penalty,
             )
 
         tokens_batch = [x.sequences_ids[0] for x in result]
 
-        def decode_batch(tokens: List[List[int]]) -> str:
+        def decode_batch(tokens: List[List[int]]) -> List[str]:
             res = []
             for tk in tokens:
                 res.append([token for token in tk if token < tokenizer.eot])
@@ -316,6 +314,7 @@ def load_model(
     download_root: Optional[str] = None,
     local_files_only=False,
     threads=4,
+    use_auth_token: Optional[Union[str, bool]] = None,
 ) -> FasterWhisperPipeline:
     """Load a Whisper model for inference.
     Args:
@@ -343,7 +342,8 @@ def load_model(
                          compute_type=compute_type,
                          download_root=download_root,
                          local_files_only=local_files_only,
-                         cpu_threads=threads)
+                         cpu_threads=threads,
+                         use_auth_token=use_auth_token)
     if language is not None:
         tokenizer = Tokenizer(model.hf_tokenizer, model.model.is_multilingual, task=task, language=language)
     else:
